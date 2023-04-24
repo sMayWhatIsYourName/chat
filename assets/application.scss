@@ -1,0 +1,183 @@
+@import "node_modules/bootstrap/scss/bootstrap";
+
+li {
+  list-style-type: none;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.message-outter {
+  display: grid;
+  width: 100%;
+  
+  & .message {
+    background-color: rgba(128, 128, 128, 0.2);
+    justify-self: flex-start;
+  }
+  
+  & .message-my {
+    background-color: #0d6efd;
+    justify-self: flex-end;
+    color: #fff;
+
+    & .post {
+      display: none;
+    }
+
+    & .message-inner {
+      justify-content: flex-end;
+      margin: 0;
+    }
+  }
+}
+
+.time {
+  font-size: 11px;
+  opacity: 0.5;
+}
+
+.post {
+  opacity: 0.5;
+}
+
+.text,
+.post,
+.author,
+.time {
+  line-height: 1;
+  margin: 0;
+}
+
+.author {
+  font-size: 15px;
+  color: #0d6efd;
+}
+
+.text {
+  font-size: 15px;
+  margin-right: 5px;
+  max-width: 100%;
+}
+
+.messages-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: first baseline;
+  margin-bottom: 5px;
+  gap: 20px;
+}
+
+.content {
+  display: inline;
+  white-space: pre-wrap;
+  word-break: break-word;
+  position: relative;
+}
+
+.chat-input {
+  resize: vertical;
+}
+
+.departments-container {
+
+  &-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.depts-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.dept {
+  width: min-content;
+}
+
+.dept-add {
+  display: flex;
+  gap: 30px;
+
+  &-btn {
+    flex-shrink: 0;
+  }
+}
+
+.dept-modal {
+  cursor: pointer;
+}
+
+.users-inner {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+th {
+  font-weight: normal;
+}
+
+.user {
+  padding: 15px;
+
+  & form > *:not(:last-of-type) {
+    margin-bottom: 50px;
+  }
+
+  &-login-data-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px;
+  }
+
+  &-personal-data-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 50px;
+  }
+  
+  &-personal-data-empoyee {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 50px;
+  }
+
+  &-footer {
+    gap: 10px;
+  }
+}
+
+.user-row-head {
+  max-height: 30px;
+}
+
+@media (min-width: 1300px) {
+  .container {
+    max-width: 80%;
+  }
+
+  .vh-75 {
+    height: 75vh;
+  }
+}
+
+@media (min-width: 750px) {
+  .message {
+    max-width: 40%;
+  }
+}
