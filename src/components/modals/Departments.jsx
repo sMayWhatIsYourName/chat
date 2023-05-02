@@ -56,7 +56,7 @@ export const Departments = (props) => {
             value={newDept}
             onChange={(e) => setNewDept(e.target.value)}
           />
-          <Button disabled={newDept.length === 0} className="dept-add-btn">Добавить отдел</Button>
+          <Button disabled={newDept.length === 0} type="submit" className="dept-add-btn">Добавить отдел</Button>
         </form>
       </Modal.Body>
       <Modal.Footer>

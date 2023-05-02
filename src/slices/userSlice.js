@@ -26,13 +26,14 @@ const setUser = (state, payload) => {
 
 const initialState = {
   access: "employee",
+  department: "",
   isActive: false,
-  username: "",
   name: "",
   password: "",
-  department: "",
+  post: "",
   secondName: "",
   thirdName: "",
+  username: "",
   id: "",
 };
 

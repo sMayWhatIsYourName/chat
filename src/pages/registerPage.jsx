@@ -43,12 +43,15 @@ function RegisterPage() {
                 onSubmit={(values) => {
                   const { username, password, name, thirdName, secondName } = values;
                   const newUser = {
-                    ...user,
                     username,
                     password,
                     name,
                     thirdName,
-                    secondName
+                    secondName,
+                    access: 'employee',
+                    department: '',
+                    isActive: false,
+                    post: ''
                   };
                   dispatch(registerUser(newUser));
                 }}

@@ -17,6 +17,7 @@ import {
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 import i18next from "i18next";
+import sound from '../../assets/sound.wav';
 
 const chatCollection = collection(db, "chat");
 
@@ -42,6 +43,9 @@ export const fetchChats = async (ctx) => {
           modifiedChat.messages.length > currentChatObj.messages.length &&
           currentChat !== change.doc.id
         ) {
+          const audio = new Audio(sound);
+          audio.volume = 0.3;
+          audio.play();
           const { name, messages } = modifiedChat;
           const { content, author } = messages.at(-1);
           const authorDoc = doc(db, "users", author.id);

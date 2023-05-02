@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/index.js';
 import { useDispatch, useSelector } from 'react-redux';
@@ -96,7 +96,7 @@ function LoginPage() {
             <div className="card-footer p-4">
               <div className="text-center">
                 <span>Нет аккаунта? </span>
-                <a href="/signup">{t('links.register')}</a>
+                <Link to="/signup">{t('links.register')}</Link>
               </div>
             </div>
           </div>

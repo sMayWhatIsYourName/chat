@@ -52,7 +52,6 @@ const ModalProvider = ({ children }) => {
   const hideModal = () => setModalInfo({ type: null, item: null });
   const showModal = (type, item = null) => setModalInfo({ type, item });
   const memoized = useMemo(() => ({ modalInfo, hideModal, showModal }), [modalInfo]);
-
   return (
     <ModalContext.Provider value={memoized}>
       {children}
@@ -100,7 +99,7 @@ function App() {
               }
             />
             <Route
-              path="/users"
+              path="users"
               element={
                 <PrivateRoute>
                   <UsersPage />
@@ -108,9 +107,9 @@ function App() {
               }
             />
             {/* Кладем внутрь компонент PrivateRoute и он следит за авторизацией */}
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="login" element={<LoginPage />} />
             {/* Страница авторизации */}
-            <Route path="/signup" element={<RegisterPage />} />
+            <Route path="signup" element={<RegisterPage />} />
             {/* Страница регистрации */}
             <Route path="*" element={<NotFoundPage />} />
             {/* Все остальные страницы */}

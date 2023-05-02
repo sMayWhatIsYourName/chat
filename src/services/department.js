@@ -6,6 +6,7 @@ import {
   collection,
   onSnapshot,
   doc,
+  where,
   addDoc,
   getDoc,
   setDoc,
@@ -13,6 +14,8 @@ import {
   arrayUnion,
   arrayRemove,
   updateDoc,
+  limit,
+  getDocs,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 import i18next from "i18next";
@@ -40,6 +43,16 @@ export const addDepartment = async (data) => {
 
 export const removeDepartment = async (data) => {
   const { dept } = data;
+  const usersInDeptRef = query(
+    collection(db, "users"),
+    where("department", "==", dept),
+    limit(1)
+  );
+  const userInDept = (await getDocs(usersInDeptRef)).docs[0];
+  if (userInDept) {
+    toast.error(i18next.t("errors.userInDept"));
+    return;
+  }
   try {
     await updateDoc(departmentsCollection, {
       arr: arrayRemove(dept),

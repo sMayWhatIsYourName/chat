@@ -15,12 +15,12 @@ li {
 .message-outter {
   display: grid;
   width: 100%;
-  
+
   & .message {
     background-color: rgba(128, 128, 128, 0.2);
     justify-self: flex-start;
   }
-  
+
   & .message-my {
     background-color: #0d6efd;
     justify-self: flex-end;
@@ -91,7 +91,6 @@ li {
 }
 
 .departments-container {
-
   &-wrapper {
     display: flex;
     justify-content: center;
@@ -126,6 +125,7 @@ li {
 .users-inner {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  max-width: 100%;
 }
 
 th {
@@ -139,22 +139,10 @@ th {
     margin-bottom: 50px;
   }
 
-  &-login-data-wrapper {
+  &-section {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 50px;
-  }
-
-  &-personal-data-wrapper {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 50px;
-  }
-  
-  &-personal-data-empoyee {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 50px;
   }
 
   &-footer {
@@ -164,6 +152,25 @@ th {
 
 .user-row-head {
   max-height: 30px;
+}
+
+table {
+  width: 100%;
+}
+
+table td,
+table th {
+  overflow-wrap: anywhere;
+}
+
+.chat-find {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin-bottom: 12px;
+}
+
+.no-chats {
+  text-align: center;
 }
 
 @media (min-width: 1300px) {
@@ -176,8 +183,30 @@ th {
   }
 }
 
-@media (min-width: 750px) {
+@media (min-width: 768px) {
   .message {
     max-width: 40%;
+  }
+}
+
+@media (max-width: 1500px) {
+  .users-inner {
+    display: block;
+  }
+
+  .user {
+    padding: 0;
+  }
+}
+
+@media (max-width: 960px) {
+  .user {
+    padding-bottom: 30px;
+
+    &-section {
+      grid-template-columns: 1fr;
+      gap: 0;
+      margin-bottom: 0 !important;
+    }
   }
 }

@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import { updateUser, removeUser } from "../services/users";
+import { access } from "../access";
 
 export const UserInfo = (props) => {
   const { t } = useTranslation();
@@ -71,9 +72,17 @@ export const UserInfo = (props) => {
       password: currentUser?.password,
       isActive: currentUser?.isActive,
       department: currentUser?.department,
+      access: currentUser?.access,
     },
   });
-  const { values, errors, handleChange, handleSubmit, setFieldValue, setFieldError } = formik;
+  const {
+    values,
+    errors,
+    handleChange,
+    handleSubmit,
+    setFieldValue,
+    setFieldError,
+  } = formik;
   useEffect(() => {
     formik.setValues({
       name: currentUser?.name,
@@ -84,24 +93,13 @@ export const UserInfo = (props) => {
       password: currentUser?.password,
       isActive: currentUser?.isActive,
       department: currentUser?.department,
+      access: currentUser?.access,
     });
   }, [currentUser]);
 
   if (!currentUser) {
     return null;
   }
-
-  const {
-    id,
-    username,
-    secondName,
-    name,
-    thirdName,
-    post,
-    department,
-    password,
-    isActive,
-  } = currentUser;
 
   const removeCurrentUser = () => {
     setUser(users.at(-2).id);
@@ -111,7 +109,7 @@ export const UserInfo = (props) => {
   return (
     <div className="user">
       <form onSubmit={handleSubmit}>
-        <div className="user-login-data-wrapper">
+        <div className="user-section">
           <FormGroup>
             <FormLabel>{t("registrationForm.username")}</FormLabel>
             <FormControl
@@ -143,7 +141,7 @@ export const UserInfo = (props) => {
             </div>
           </FormGroup>
         </div>
-        <div className="user-personal-data-wrapper">
+        <div className="user-section">
           <FormGroup>
             <FormLabel>{t("registrationForm.secondName")}</FormLabel>
             <FormControl
@@ -187,7 +185,7 @@ export const UserInfo = (props) => {
             </div>
           </FormGroup>
         </div>
-        <div className="user-personal-data-empoyee">
+        <div className="user-section">
           <FormGroup>
             <FormLabel>{t("data.post")}</FormLabel>
             <FormControl
@@ -227,6 +225,30 @@ export const UserInfo = (props) => {
             </div>
           </FormGroup>
           <FormGroup>
+            <FormLabel>{t("data.access")}</FormLabel>
+            <Dropdown>
+              <Dropdown.Toggle variant="secondary">
+                {access[values.access]}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                {Object.entries(access).map(([key, value]) => (
+                  <Dropdown.Item
+                    onClick={() => {
+                      setFieldValue("access", key);
+                    }}
+                    key={key}
+                  >
+                    {value}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+            <div className="invalid-feedback" style={{ display: "block" }}>
+              {errors.access}
+            </div>
+          </FormGroup>
+          <FormGroup>
             <FormLabel>{t("data.activate")}</FormLabel>
             <Dropdown>
               <Dropdown.Toggle variant="secondary">
@@ -260,7 +282,11 @@ export const UserInfo = (props) => {
           </FormGroup>
         </div>
         <div className="d-flex justify-content-end user-footer">
-          <Button onClick={removeCurrentUser} ref={buttonRef} variant="secondary">
+          <Button
+            onClick={removeCurrentUser}
+            ref={buttonRef}
+            variant="secondary"
+          >
             Удалить
           </Button>
           <Button type="submit" ref={buttonRef} variant="primary">

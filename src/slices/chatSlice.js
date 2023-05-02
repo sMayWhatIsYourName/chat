@@ -11,6 +11,9 @@ export const chatSlice = createSlice({
   reducers: {
     setChats: (state, { payload }) => {
       const currentChat = payload.find((chat) => chat.id === state.currentChat);
+      if (payload.length === 0) {
+        return;
+      }
       if (state.chats.length === 0 || !currentChat) {
         state.currentChat = payload[0].id;
       }
