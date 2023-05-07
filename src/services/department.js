@@ -7,10 +7,6 @@ import {
   onSnapshot,
   doc,
   where,
-  addDoc,
-  getDoc,
-  setDoc,
-  deleteDoc,
   arrayUnion,
   arrayRemove,
   updateDoc,
@@ -20,41 +16,41 @@ import {
 import { toast } from "react-toastify";
 import i18next from "i18next";
 
-const departmentsCollection = doc(db, "utils", "departments");
+const departmentsCollection = doc(db, "utils", "departments"); // для удобства доступа
 
-export const fetchDepartments = async () => {
-  onSnapshot(departmentsCollection, async (doc) => {
-    const result = doc.data().arr;
-    store.dispatch(actions.setDepartments(result));
+export const fetchDepartments = async () => { // запрашиваем все отделы
+  onSnapshot(departmentsCollection, async (doc) => { // подписываемся на изменение отделов в бд
+    const result = doc.data().arr; // получаем отделы обращаясь к полю arr
+    store.dispatch(actions.setDepartments(result)); // добавляем все отделы в наше redux хранилище
   });
 };
 
-export const addDepartment = async (data) => {
+export const addDepartment = async (data) => { // добавить отдел
   const { dept } = data;
   try {
-    await updateDoc(departmentsCollection, {
-      arr: arrayUnion(dept),
+    await updateDoc(departmentsCollection, { // обновляем документ по пути "utils/departments"
+      arr: arrayUnion(dept), // добавляем в конец массива новый отдел
     });
-    toast.success(i18next.t("success.addDept"));
+    toast.success(i18next.t("success.addDept")); // оповещаем об удачном добавлении отдела
   } catch (e) {
-    toast.error(i18next.t("errors.addDept"));
+    toast.error(i18next.t("errors.addDept")); // оповещаем о неудачном добавлении отдела
   }
 };
 
-export const removeDepartment = async (data) => {
+export const removeDepartment = async (data) => { // удаление отдела
   const { dept } = data;
-  const usersInDeptRef = query(
+  const usersInDeptRef = query( // смотрим есть ли хотя бы 1 человек в отделе
     collection(db, "users"),
     where("department", "==", dept),
     limit(1)
   );
   const userInDept = (await getDocs(usersInDeptRef)).docs[0];
-  if (userInDept) {
+  if (userInDept) { // если есть - дропаем ошибку
     toast.error(i18next.t("errors.userInDept"));
     return;
   }
   try {
-    await updateDoc(departmentsCollection, {
+    await updateDoc(departmentsCollection, { // удаляем отдел из массива отделов
       arr: arrayRemove(dept),
     });
     toast.success(i18next.t("success.removeDept"));

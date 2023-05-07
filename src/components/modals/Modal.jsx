@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { useModal } from "../../hooks";
 import getModal from './index';
+import Add from './Add';
 
 export const Modal = (props) => {
   const { modalInfo, hideModal } = useModal();

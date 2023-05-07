@@ -12,13 +12,13 @@ import { fetchDepartments } from "../services/department.js";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../slices/userSlice.js";
 import { UsersPage } from "../pages/usersPage.jsx";
-import { fetchUsers } from '../services/users.js';
+import { fetchUsers } from "../services/users.js";
 
 function AuthProvider({ children }) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); // Хук для выполнения действия в redux
   const username = localStorage.getItem("username");
   const password = localStorage.getItem("password"); // Возьмем из локального хранилища инфу о токене
-  const currentUserState = Boolean(username); // есть ли токен
+  const currentUserState = Boolean(username); // есть ли имя пользователя
   const [loggedIn, setLoggedIn] = useState(currentUserState); // создадим состояние авторизации
   // и её обработчик с дефолтным значением currentUserState
 
@@ -31,6 +31,7 @@ function AuthProvider({ children }) {
   };
 
   useEffect(() => {
+    // Сработает только при загрузке приложения
     if (username && password) {
       const user = {
         username,
@@ -48,14 +49,15 @@ function AuthProvider({ children }) {
 }
 
 const ModalProvider = ({ children }) => {
-  const [modalInfo, setModalInfo] = useState({ type: null, item: null });
-  const hideModal = () => setModalInfo({ type: null, item: null });
-  const showModal = (type, item = null) => setModalInfo({ type, item });
-  const memoized = useMemo(() => ({ modalInfo, hideModal, showModal }), [modalInfo]);
+  const [modalInfo, setModalInfo] = useState({ type: null, item: null }); // Состояние открытой на данный момент модалки
+  const hideModal = () => setModalInfo({ type: null, item: null }); // Скрываем модалку
+  const showModal = (type, item = null) => setModalInfo({ type, item }); // ПОказываем модалку
+  const memoized = useMemo(
+    () => ({ modalInfo, hideModal, showModal }),
+    [modalInfo]
+  ); // Создаем модалку и передаем как дефолтное значение в наш Context API
   return (
-    <ModalContext.Provider value={memoized}>
-      {children}
-    </ModalContext.Provider>
+    <ModalContext.Provider value={memoized}>{children}</ModalContext.Provider>
   );
 };
 
@@ -67,18 +69,19 @@ function PrivateRoute({ children }) {
 }
 
 function App() {
-  const { access, department } = useSelector(state => state.user);
+  const { access, department } = useSelector((state) => state.user); // Получаем информацию о юзере из хранилища
 
   useEffect(() => {
     if (department) {
+      // Если отдел есть - запрашиваем чаты для этого отдела
       const context = {
         access,
-        department
-      }
+        department,
+      };
       fetchChats(context);
     }
-    fetchUsers(access);
-    fetchDepartments();
+    fetchUsers(access); // Загрузка всех пользователей для страницы сотрудника
+    fetchDepartments(); // Загрузка всех отделов
   }, [access, department]);
 
   return (
@@ -98,6 +101,7 @@ function App() {
                 </PrivateRoute>
               }
             />
+            {/* Страница всех пользователей */}
             <Route
               path="users"
               element={

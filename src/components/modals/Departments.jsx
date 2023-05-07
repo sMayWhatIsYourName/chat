@@ -54,7 +54,7 @@ export const Departments = (props) => {
         <form className="dept-add" onSubmit={addDept}>
           <FormControl
             value={newDept}
-            onChange={(e) => setNewDept(e.target.value)}
+            onChange={(e) => setNewDept(e.target.value.trim())}
           />
           <Button disabled={newDept.length === 0} type="submit" className="dept-add-btn">Добавить отдел</Button>
         </form>

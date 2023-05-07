@@ -63,7 +63,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.rejected, (_state, { error }) => {
         if (error.code === "403") {
-          toast.error(i18next.t("errors.activate"));
+          toast.error(i18next.t("errors.needActivate"));
         } else if (error.code === "404") {
           toast.error(i18next.t("errors.auth"));
         }
