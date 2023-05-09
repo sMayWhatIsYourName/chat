@@ -47,12 +47,12 @@ export const removeUser = async (id) => { // удаление пользоват
     const userRef = doc(db, "users", id);
     const chatsCollection = collection(db, "chat");
     const chats = await getDocs(chatsCollection); // запрашиваем все чаты
-    chats.forEach(async (chat) => { // проходимся по чатам
+    chats.forEach((chat) => { // проходимся по чатам
       const { messages } = chat.data();
       const newMessages = messages.filter(msg => msg.author.id !== id); // оставляем сообщения только те, в которых автор не тот, кого мы пытаемся удаилть
 
       if (newMessages.length < messages.length) { // если количество сообщений в чате больше или равно отфильтрованным сообщениям, то мы в целях оптимизации НЕ обновляем документ
-        await updateDoc(chat.ref, {
+        updateDoc(chat.ref, {
           messages: newMessages
         });
       }

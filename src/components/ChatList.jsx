@@ -22,7 +22,7 @@ export const ChatList = () => {
   }
 
   return (
-    <>
+    <div className="chats">
       <div className="chat-find">
         <FormControl
           placeholder="Поиск"
@@ -31,6 +31,6 @@ export const ChatList = () => {
         />
       </div>
       {list}
-    </>
+    </div>
   );
 };

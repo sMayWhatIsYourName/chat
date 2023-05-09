@@ -173,13 +173,35 @@ table th {
   text-align: center;
 }
 
+.login-page {
+  background-image: url('loginBG.jpg');
+}
+
+.chat-page {
+  background-image: url('chatBG.jpg');
+}
+
+.register-page {
+  background-image: url('registerBG.jpeg');
+  background-size: cover;
+}
+
+.login-page, .chat-page, .register-page {
+  background-repeat: repeat-y;
+  height: calc(100vh - 56px);
+}
+
+.chat-page__inner {
+  height: calc(100% - 3rem);
+}
+
+.register-card__wrapper {
+  max-width: 1200px;
+}
+
 @media (min-width: 1300px) {
   .container {
     max-width: 80%;
-  }
-
-  .vh-75 {
-    height: 75vh;
   }
 }
 
@@ -208,5 +230,11 @@ table th {
       gap: 0;
       margin-bottom: 0 !important;
     }
+  }
+}
+
+@media (max-height: 1000px) and (max-width: 765px) {
+  .register-card {
+    padding: 0 !important;
   }
 }

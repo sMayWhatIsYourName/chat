@@ -24,6 +24,7 @@ const setUser = (state, payload) => {
   }
 };
 
+
 const initialState = {
   access: "employee",
   department: "",
@@ -42,7 +43,9 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      state = initialState;
+      for (const key of Object.keys(state)) {
+        state[key] = initialState[key];
+      }
     },
   },
   extraReducers: (builder) => {

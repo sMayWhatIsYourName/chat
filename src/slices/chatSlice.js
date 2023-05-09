@@ -7,7 +7,7 @@ const initialState = {
 
 export const chatSlice = createSlice({
   name: "chat",
-  initialState: initialState,
+  initialState,
   reducers: {
     setChats: (state, { payload }) => {
       const currentChat = payload.find((chat) => chat.id === state.currentChat);

@@ -61,10 +61,11 @@ export const fetchChats = async (ctx) => {
 
   onSnapshot(queryChats, async (data) => {
     const chatsArr = data.docs.map(async (docItem) => {
-      const { name, messages, haveAccess } = docItem.data();
+      const { name: chatName, messages, haveAccess } = docItem.data();
       const newMessages = messages.map(async (msg) => {
         const authorDoc = doc(db, "users", msg.author.id);
         const authorRef = await getDoc(authorDoc);
+        // console.log(authorRef.data(), chatName);
         const { name, secondName, thirdName, post } = authorRef.data();
 
         return {
@@ -80,7 +81,7 @@ export const fetchChats = async (ctx) => {
       });
       return {
         id: docItem.id,
-        name,
+        name: chatName,
         haveAccess,
         messages: await Promise.all(newMessages),
       };
