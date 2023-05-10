@@ -24,12 +24,16 @@ export const UsersPage = () => {
 
   return (
     <>
-      <div className="container">
-        <div className="users-inner">
-          <UserList setUser={setCurrentUser} />
-          {currentUser ? (
-            <UserInfo setUser={setCurrentUser} user={currentUser} />
-          ) : null}
+      <div className="users-page">
+        <div className="container">
+          <div className="users-wrapper">
+            <div className="users-inner rounded shadow">
+              <UserList setUser={setCurrentUser} />
+              {currentUser ? (
+                <UserInfo setUser={setCurrentUser} user={currentUser} />
+              ) : null}
+            </div>
+          </div>
         </div>
       </div>
       <Modal />

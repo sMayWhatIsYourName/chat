@@ -125,6 +125,7 @@ li {
 .users-inner {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  height: calc(100% - 3rem);
   max-width: 100%;
 }
 
@@ -132,8 +133,19 @@ th {
   font-weight: normal;
 }
 
+.users-table {
+  overflow: scroll;
+  height: 100%;
+  display: block;
+  scrollbar-width: thin;
+}
+
+th {
+  min-width: 75px;
+}
+
 .user {
-  padding: 15px;
+  padding-left: 15px;
 
   & form > *:not(:last-of-type) {
     margin-bottom: 50px;
@@ -174,19 +186,39 @@ table th {
 }
 
 .login-page {
-  background-image: url('/loginBG.jpg');
+  background-image: url("/loginBG.jpg");
 }
 
-.chat-page {
-  background-image: url('/chatBG.jpg');
+.chat-page,
+.users-page {
+  background-image: url("/chatBG.jpg");
+}
+
+.users-page .container {
+  height: 100%;
+}
+
+.users-inner {
+  background-color: #fff;
+  padding: 15px;
+  // height: calc(100% - 3rem);
+}
+
+.users-wrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .register-page {
-  background-image: url('/registerBG.jpeg');
+  background-image: url("/registerBG.jpeg");
   background-size: cover;
 }
 
-.login-page, .chat-page, .register-page {
+.login-page,
+.chat-page,
+.register-page,
+.users-page {
   background-repeat: repeat-y;
   height: calc(100vh - 56px);
 }
@@ -212,8 +244,20 @@ table th {
 }
 
 @media (max-width: 1500px) {
+  .users-page {
+    height: auto;
+  }
+
+  .users-wrapper {
+    padding: 1.5rem 0;
+  }
+
   .users-inner {
     display: block;
+  }
+
+  .users-table {
+    max-height: 820px;
   }
 
   .user {

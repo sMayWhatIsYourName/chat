@@ -5,7 +5,7 @@ export const UserList = (props) => {
   const { setUser } = props;
   const users = useSelector((state) => state.users.users);
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover className="users-table">
       <thead>
         <tr>
           <th>Логин</th>
