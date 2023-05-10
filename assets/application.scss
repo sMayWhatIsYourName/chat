@@ -125,7 +125,7 @@ li {
 .users-inner {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  height: calc(100% - 3rem);
+  // height: calc(100% - 3rem);
   max-width: 100%;
 }
 
@@ -280,5 +280,35 @@ table th {
 @media (max-height: 1000px) and (max-width: 765px) {
   .register-card {
     padding: 0 !important;
+  }
+}
+
+.chat-side {
+  max-width: 335px;
+}
+
+// user data
+
+.user-data {
+  padding: 1rem 0 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 7.5px;
+
+  &-wrapper {
+    gap: 10px;
+  }
+  
+  &-inner {
+    gap: 5px;
+  }
+  
+  &-wrapper, &-inner {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &-value {
+    margin: 0;
   }
 }
