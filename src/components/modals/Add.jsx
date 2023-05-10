@@ -23,7 +23,8 @@ function Add(props) {
     inputRef.current.focus(); // фокус на поле
   }, []);
 
-  const feedbackStyle = { // инлайн-стили
+  // TODO: Подумать
+  const feedbackStyle = { // инлайн-стили 
     display: 'block',
   };
 

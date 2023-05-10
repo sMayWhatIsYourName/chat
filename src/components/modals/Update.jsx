@@ -16,8 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { actions } from "../../slices/chatSlice.js";
 import { updateChat } from "../../services/chat.js";
 
-function Rename(props) {
-  const { t } = useTranslation();
+function Update(props) {
+  const { t } = useTranslation(); // функция для локализации
   const {
     onHide,
     modalInfo: {
@@ -26,29 +26,32 @@ function Rename(props) {
   } = props;
   // берем из пропсов функцию для закрытия модалки, каналы для проверки на уникальность
   // И информацию о модалке (предыдущее имя и id)
-  const inputRef = useRef();
-  const buttonRef = useRef();
-  const dispatch = useDispatch();
+  const inputRef = useRef(); // создаем реф для инпута чтоб на нем ловить фокус
+  const dispatch = useDispatch(); // этот хук возвращает фунцию, которая будет выполнять действия для хранилища
   const { chats } = useSelector((state) => state.chat);
   const { depts } = useSelector((state) => state.department);
-  const currentChatObj = chats.find((chat) => chat.id === id);
+  const currentChatObj = chats.find((chat) => chat.id === id); // получаем необходимый нам чат для изменения
   const haventAccessDept = depts.filter(
+    // получаем те отделы, которые НЕ имеют доступ к этому чату
     (dept) => !currentChatObj.haveAccess.includes(dept)
   );
 
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current.focus(); // ловим фокус на инпуте
   }, []);
 
   const feedbackStyle = {
+    // TODO: убрать
     display: "block",
   };
 
   const addDeptAccess = (dept) => () => {
+    // даем доступ к чату к переданному отделу
     dispatch(actions.addDept({ id, dept }));
   };
 
   const removeDeptAccess = (dept) => () => {
+    // забираем доступ к чату у переданного отдела
     dispatch(actions.removeDept({ id, dept }));
   };
 
@@ -62,18 +65,18 @@ function Rename(props) {
         <Formik
           onSubmit={({ name }, actions) => {
             if (name === "") {
+              // если имя пустое - говорим заполнить поле
               actions.setFieldError("name", t("errors.required"));
               return;
             }
-            buttonRef.current.setAttribute("disabled", "");
             const chatObj = {
               messages: currentChatObj.messages,
               haveAccess: currentChatObj.haveAccess,
               name,
             };
 
-            updateChat(chatObj, id);
-            onHide();
+            updateChat(chatObj, id); // обновляем чат
+            onHide(); // закрываем модалку
           }}
           initialValues={{
             name: prevName,
@@ -104,23 +107,27 @@ function Rename(props) {
                 <Card.Title className="mb-2">
                   Доступ к чату есть у следующих отделов:{" "}
                 </Card.Title>
-                {currentChatObj.haveAccess.length > 0 ? (
+                {currentChatObj.haveAccess.length > 0 ? ( // если есть отделы с доступом к этому чату - рисуем
                   <div className="d-flex gap-2 flex-wrap py-2">
-                    {currentChatObj.haveAccess.map((dept) => (
-                      <Badge key={dept} className="p-2">
-                        <div className="d-flex align-items-center">
-                          <span>{dept}</span>
-                          <CloseButton
-                            variant="white"
-                            className="ms-2"
-                            onClick={removeDeptAccess(dept)}
-                          />
-                        </div>
-                      </Badge>
-                    ))}
+                    {currentChatObj.haveAccess.map(
+                      (
+                        dept // проходимся по отделам и рисуем их
+                      ) => (
+                        <Badge key={dept} className="p-2">
+                          <div className="d-flex align-items-center">
+                            <span>{dept}</span>
+                            <CloseButton
+                              variant="white"
+                              className="ms-2"
+                              onClick={removeDeptAccess(dept)} // при нажатии на кнопку - удалим отдел из чата
+                            />
+                          </div>
+                        </Badge>
+                      )
+                    )}
                   </div>
                 ) : null}
-                {haventAccessDept.length > 0 ? (
+                {haventAccessDept.length > 0 ? ( // если отделов, у которых нет доступа к чату БОЛЬШЕ 0 - рисуем дропдаун и в нем показываеам эти отделы
                   <Dropdown>
                     <Dropdown.Toggle variant="secondary">
                       Добавить отдел
@@ -129,6 +136,8 @@ function Rename(props) {
                     <Dropdown.Menu>
                       {haventAccessDept.map((dept) => (
                         <Dropdown.Item onClick={addDeptAccess(dept)} key={dept}>
+                          {" "}
+                          {/* на клик вешаем добавление отдела */}
                           {dept}
                         </Dropdown.Item>
                       ))}
@@ -140,12 +149,12 @@ function Rename(props) {
                 <Button
                   type="button"
                   className="me-2"
-                  onClick={onHide}
+                  onClick={onHide} // при клике на отменить - закрываем модалку
                   variant="secondary"
                 >
                   Отменить
                 </Button>
-                <Button type="submit" ref={buttonRef} variant="primary">
+                <Button type="submit" variant="primary">
                   Отправить
                 </Button>
               </div>
@@ -157,4 +166,4 @@ function Rename(props) {
   );
 }
 
-export default Rename;
+export default Update;

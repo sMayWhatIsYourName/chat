@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { Badge } from "react-bootstrap";
 
 export const UserData = () => {
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user); // берем из хранилища инфу о юзере
 
   return (
     <div className="user-data">

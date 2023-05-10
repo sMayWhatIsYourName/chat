@@ -1,16 +1,16 @@
 import { useSelector } from "react-redux";
 import { useModal } from "../hooks";
 
-export const ButtonAddChat = () => {
-  const { showModal } = useModal();
-  const user = useSelector((state) => state.user);
-  if (user.access === 'employee') {
+export const ButtonAddChat = () => { // кнопка создания чата
+  const { showModal } = useModal(); // функция для открытия модалки
+  const user = useSelector((state) => state.user); // берем инфу о юзере
+  if (user.access === 'employee') { // если уровень доступа = сотрудник, то мы не рисуем эту кнопку
     return null;
   }
   return (
     <button
       className="p-0 text-primary btn btn-group-vertical"
-      onClick={() => showModal("adding")}
+      onClick={() => showModal("adding")} // при нажатии на кнопку - открываем модалку создания нового канала
       type="button"
     >
       {" "}

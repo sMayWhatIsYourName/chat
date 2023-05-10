@@ -1,22 +1,17 @@
-import React, { useRef } from 'react';
-import { Modal, FormGroup } from 'react-bootstrap';
-import successCheck from '../../utils/successCheck.js';
-import { removeChat } from '../../services/chat.js';
-
-const generateOnSubmit = ({ modalInfo: { item }, onHide }, buttonRef) => (e) => {
-  e.preventDefault();
-  buttonRef.current.setAttribute('disabled', '');
-  removeChat(item)
-  onHide();
-  successCheck(buttonRef)
-};
+import React from "react";
+import { Modal, FormGroup } from "react-bootstrap";
+import { removeChat } from "../../services/chat.js";
 
 function Remove(props) {
-  const { onHide } = props;
-  const buttonRef = useRef();
-  const onSubmit = generateOnSubmit(props, buttonRef);
-  // вызываем функцию и замыкаем в ней props, socket и buttonRef
-  // в ответ получаем другую функцию, которую мы передаем на submit формы
+  const {
+    onHide,
+    modalInfo: { item },
+  } = props; // из пропсов берем функцию для закрытия модалки
+  const onSubmit = (e) => {
+    e.preventDefault(); // отключаем дефолтное поведение браузера (перезагрузку страницы)
+    removeChat(item); // удаляем чат
+    onHide(); // скрываем модалку
+  }; // в ответ получаем другую функцию, которую мы передаем на submit формы
 
   return (
     <Modal show onHide={onHide}>
@@ -26,11 +21,22 @@ function Remove(props) {
 
       <Modal.Body>
         <form onSubmit={onSubmit}>
+          {" "}
+          {/* Вешаем функцию обработчик на отправку формы */}
           <FormGroup>
             <p className="lead">Уверены?</p>
             <div className="d-flex justify-content-end">
-              <button className="me-2 btn btn-secondary" onClick={onHide} type="button">Отменить</button>
-              <button type="submit" ref={buttonRef} className="btn btn-danger">Удалить</button>
+              <button
+                className="me-2 btn btn-secondary"
+                onClick={onHide}
+                type="button"
+              >
+                Отменить
+              </button>{" "}
+              {/* Вешаем функцию для закрытия модалки на кнопку */}
+              <button type="submit" className="btn btn-danger">
+                Удалить
+              </button>
             </div>
           </FormGroup>
         </form>

@@ -62,7 +62,7 @@ export const ChatButton = (props) => {
             <Dropdown.Item
               data-rr-ui-dropdown-item
               href="#"
-              onClick={() => showModal("renaming", { id, name })}
+              onClick={() => showModal("updating", { id, name })}
             >
               {" "}
               {/* При нажатии открываем модалку изменения канала */}

@@ -1,30 +1,13 @@
-import { useSelector } from "react-redux";
 import { useModal } from "../../hooks";
-import getModal from './index';
-import Add from './Add';
+import getModal from "./index";
 
-export const Modal = (props) => {
-  const { modalInfo, hideModal } = useModal();
-  const chats = useSelector((state) => state.chat.chats);
+export const Modal = () => {
+  const { modalInfo, hideModal } = useModal(); // инфу о текущей модалке и функцию для закрытия модалки
   if (!modalInfo.type) {
-    // если у модалки нет типа - возвращаем children
-    return props.children;
-  }
-
-  if (modalInfo.type === "adding") {
-    return (
-      <>
-        {props.children}
-        <Add modalInfo={modalInfo} onHide={hideModal} />
-      </>
-    );
+    // если у модалки нет типа - возвращаем null
+    return null;
   }
 
   const Component = getModal(modalInfo.type); // получаем нужную нам модалку
-  return (
-    <>
-      {props.children}
-      <Component channels={chats} modalInfo={modalInfo} onHide={hideModal} />
-    </>
-  ); // рендерим её
+  return <Component modalInfo={modalInfo} onHide={hideModal} />; // рендерим её
 };

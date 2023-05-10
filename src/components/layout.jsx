@@ -19,7 +19,7 @@ function Layout() {
       <Navbar className="shadow-sm" expand="lg" variant="light" bg="white">
         <Container>
           <Link className="navbar-brand" to="/">
-            BIMEISTER CHAT
+            Каналы
           </Link>
           {user.access === "admin" && auth.loggedIn ? (
             <>
