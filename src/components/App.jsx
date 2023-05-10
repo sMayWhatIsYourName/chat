@@ -14,6 +14,8 @@ import { loginUser } from "../slices/userSlice.js";
 import { UsersPage } from "../pages/usersPage.jsx";
 import { fetchUsers } from "../services/users.js";
 
+// hi
+
 function AuthProvider({ children }) {
   const dispatch = useDispatch(); // Хук для выполнения действия в redux
   const username = localStorage.getItem("username");
