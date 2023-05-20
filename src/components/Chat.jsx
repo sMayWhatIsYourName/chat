@@ -1,18 +1,19 @@
 import filter from "leo-profanity";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { Messages } from "./Messages";
 import { useTranslation } from "react-i18next";
 import { addMessage } from "../services/chat";
 import { useRef } from "react";
+import arrow from "/arrowLeft.svg";
+import { actions } from "../slices/chatSlice";
 
 filter.add(filter.getDictionary("ru")); // Добавляем русский в библиотеку-цензор матов
 
 export const Chat = () => {
   const { currentChat, chats } = useSelector((state) => state.chat);
-  const user = useSelector(
-    (state) => state.user
-  );
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const formRef = useRef(null);
   const handleSubmit = ({ body }) => {
     formik.values.body = ""; // очистим поле ввода сообщения после отправки
@@ -23,7 +24,7 @@ export const Chat = () => {
     const newMessage = {
       content: filter.clean(saveFormattingMsg),
       author: {
-        id: user.id
+        id: user.id,
       },
     };
     addMessage(newMessage, currentChat);
@@ -42,19 +43,32 @@ export const Chat = () => {
     }
   };
 
+  const backToChannels = () => {
+    dispatch(actions.changeChat(null));
+  }
+
   const currentChatObj = chats.find((chat) => chat.id === currentChat);
   const { t } = useTranslation();
   if (!currentChat) {
-    return null;
+    return (
+      <div className="choose-channel-wrapper">
+        <div className="bg-white rounded choose-channel">
+          <p className="m-0">Выберите канал</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="col p-0 h-100">
+    <div className="col p-0 h-100 bg-white">
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
-          <p className="m-0">
-            <b># {currentChatObj.name}</b>
-          </p>
+          <div className="m-0 d-flex align-items-center">
+            <div className="me-1 chats-icon" onClick={backToChannels}>
+              <img src={arrow} />
+            </div>
+            <b>{currentChatObj.name}</b>
+          </div>
           <span className="text-muted">
             {t("chatForm.message", { count: currentChatObj.messages.length })}
           </span>{" "}

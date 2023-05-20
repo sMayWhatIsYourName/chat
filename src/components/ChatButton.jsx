@@ -9,7 +9,7 @@ export const ChatButton = (props) => {
   const { showModal } = useModal();
   const dispatch = useDispatch();
 
-  const changeChat = (id) => () => {
+  const changeChat = (id) => {
     // функция для смены канала
     dispatch(actions.changeChat(id)); // изменяем текущий канал
   };
@@ -30,13 +30,11 @@ export const ChatButton = (props) => {
     >
       <Button
         type="button"
-        onClick={changeChat(id)}
+        onClick={() => changeChat(id)}
         variant={variant}
         className={newClasses}
       >
-        {" "}
         {/* При нажатии на кнопку меняем канал */}
-        <span className="me-1">#</span>
         {name}
       </Button>
       {user.access !== "employee" ? (

@@ -231,6 +231,11 @@ table th {
   max-width: 1200px;
 }
 
+.chats-icon {
+  cursor: pointer;
+  display: none;
+}
+
 @media (min-width: 1300px) {
   .container {
     max-width: 80%;
@@ -298,17 +303,46 @@ table th {
   &-wrapper {
     gap: 10px;
   }
-  
+
   &-inner {
     gap: 5px;
   }
-  
-  &-wrapper, &-inner {
+
+  &-wrapper,
+  &-inner {
     display: flex;
     flex-wrap: wrap;
   }
 
   &-value {
     margin: 0;
+  }
+}
+
+.choose-channel {
+  height: 35px;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 768px) {
+  .chats-icon {
+    display: block;
+  }
+
+  .chat-side {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .choose-channel {
+    display: none;
   }
 }

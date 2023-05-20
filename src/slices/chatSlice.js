@@ -14,9 +14,6 @@ export const chatSlice = createSlice({
       if (payload.length === 0) {
         return;
       }
-      if (state.chats.length === 0 || !currentChat) {
-        state.currentChat = payload[0].id;
-      }
       state.chats = [...payload];
     },
     changeChat: (state, { payload }) => {
