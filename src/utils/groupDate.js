@@ -18,7 +18,8 @@ export const groupDate = (arr) => {
   const cache = new Map();
   const currentYear = new Date(Date.now()).getFullYear();
 
-  for (const item of arr) {
+  for (let i = 0; i < arr.length; i++) {
+    const item = arr[i];
     const date = new Date(item.date);
     const day = date.getDate();
     const month = months[date.getMonth()];
@@ -27,7 +28,8 @@ export const groupDate = (arr) => {
     const formattedDate = isCurrentYear ? `${day} ${month}` : `${day} ${month} ${year}`;
     const newMsg = {
       item,
-      date
+      date,
+      number: i + 1
     };
 
     const groupDate = cache.get(formattedDate);

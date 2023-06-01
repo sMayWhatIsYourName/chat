@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { login, register } from "../services/user";
 import { toast } from "react-toastify";
 import i18next from "i18next";
 
@@ -24,7 +23,6 @@ const setUser = (state, payload) => {
   }
 };
 
-
 const initialState = {
   access: "employee",
   department: "",
@@ -36,6 +34,7 @@ const initialState = {
   thirdName: "",
   username: "",
   id: "",
+  chats: null,
 };
 
 const userSlice = createSlice({
@@ -47,6 +46,9 @@ const userSlice = createSlice({
         state[key] = initialState[key];
       }
     },
+    setUser: (state, { payload }) => {
+      setUser(state, payload);
+    }
   },
   extraReducers: (builder) => {
     builder

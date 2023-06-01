@@ -5,8 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../hooks/index.js";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../slices/userSlice.js";
 import loginPhoto from "/loginPhoto.jpg";
+import { login } from "../services/user.js";
 
 function LoginPage() {
   const { t } = useTranslation(); // берем функцию для перевода
@@ -47,7 +47,7 @@ function LoginPage() {
                     username,
                     password,
                   };
-                  dispatch(loginUser(user));
+                  login(user);
                 }}
                 initialValues={{
                   // стартовые значения

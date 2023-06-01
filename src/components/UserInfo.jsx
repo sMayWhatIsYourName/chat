@@ -61,7 +61,7 @@ export const UserInfo = (props) => {
   const formik = useFormik({
     validationSchema: schema,
     onSubmit: (formValues) => {
-      updateUser(formValues, currentUser?.id);
+      updateUser(formValues, currentUser?.id, currentUser.chats);
     },
     initialValues: {
       name: currentUser?.name,

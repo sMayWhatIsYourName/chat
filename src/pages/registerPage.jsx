@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../slices/userSlice.js";
 import registerPhoto from "/registerPhoto.jpg";
+import { register } from "../services/user.js";
 
 function RegisterPage() {
   const { t } = useTranslation();
@@ -77,7 +78,8 @@ function RegisterPage() {
                     isActive: false,
                     post: "",
                   };
-                  dispatch(registerUser(newUser));
+                  // dispatch(registerUser(newUser));
+                  register(newUser);
                 }}
                 initialValues={{
                   username: "",

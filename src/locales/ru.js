@@ -19,6 +19,10 @@ export default {
       message_one: '{{count}} сообщение',
       message_few: '{{count}} сообщения',
       message_many: '{{count}} сообщений',
+      user_zero: `{{count}} пользователей`,
+      user_one: `{{count}} пользователь`,
+      user_few: `{{count}} пользователя`,
+      user_many: `{{count}} пользователей`,
     },
     links: {
       register: 'Регистрация',

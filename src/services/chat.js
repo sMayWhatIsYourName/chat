@@ -11,22 +11,27 @@ import {
   setDoc,
   deleteDoc,
   arrayUnion,
-  arrayRemove,
   updateDoc,
   where,
+  getDocs,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 import i18next from "i18next";
-import sound from '../../assets/sound.wav'; // звук уведомления при получения сообщения
+import sound from "../../assets/sound.wav"; // звук уведомления при получения сообщения
+import { usersCollection } from "./users.js";
+import { v4 } from "uuid";
 
-const chatCollection = collection(db, "chat");
+export const chatCollection = collection(db, "chat");
 
-export const fetchChats = async (ctx) => { // запрос всех чатов для юзера
+export const fetchChats = async (ctx) => {
+  // запрос всех чатов для юзера
   const { access, department } = ctx;
   let queryChats;
-  if (access !== "employee") { // если уровень доступа не сотрудник - запрашиваются все чаты
+  if (access !== "employee") {
+    // если уровень доступа не сотрудник - запрашиваются все чаты
     queryChats = query(chatCollection);
-  } else { // иначе запрашиваются только те чаты, к которым имеет доступ юзер исходя из его отдела
+  } else {
+    // иначе запрашиваются только те чаты, к которым имеет доступ юзер исходя из его отдела
     queryChats = query(
       chatCollection,
       where("haveAccess", "array-contains", department)
@@ -51,21 +56,59 @@ export const fetchChats = async (ctx) => { // запрос всех чатов �
           const authorDoc = doc(db, "users", author.id); // получаем документ автора сообщения
           const authorRef = await getDoc(authorDoc); // получаем документ автора сообщения
           const { name: firstName, secondName, thirdName } = authorRef.data(); // получаем ФИО отправителя
-          const fullName = `${secondName} ${firstName.at(0)}. ${thirdName.at(0)}.`; // генерируем ФИО отправителя
-          const newMessageNotification = `${name} ${fullName}: ${content}`;  // генерируем уведомление
+          const fullName = `${secondName} ${firstName.at(0)}. ${thirdName.at(
+            0
+          )}.`; // генерируем ФИО отправителя
+          const newMessageNotification = `${name} ${fullName}: ${content}`; // генерируем уведомление
           toast.info(newMessageNotification);
         }
       }
     });
   });
 
-  onSnapshot(queryChats, async (data) => { // обновляем наше redux хранилище с чатами
+  onSnapshot(queryChats, async (data) => {
+    // обновляем наше redux хранилище с чатами
     const chatsArr = data.docs.map(async (docItem) => {
       const { name: chatName, messages, haveAccess } = docItem.data(); // берем название чата, сообщения и массив отделов
-      const newMessages = messages.map(async (msg) => { // генерируем новый массив сообщений для удобной обработки
+      const newMessages = messages.map(async (msg) => {
+        // генерируем новый массив сообщений для удобной обработки
         const authorDoc = doc(db, "users", msg.author.id); // получаем автора конкретного сообщения
         const authorRef = await getDoc(authorDoc); // получаем автора конкретного сообщения
         const { name, secondName, thirdName, post } = authorRef.data(); // получаем данные из автора
+
+        let newReply = null;
+
+        if (msg.reply) {
+          const { author, content, id } = msg.reply;
+          if (author === msg.author.id) {
+            newReply = {
+              content,
+              author: {
+                name,
+                secondName,
+                thirdName
+              },
+              id
+            };
+          } else {
+            try {
+              const authorReplyDoc = doc(db, "users", author);
+              const authorReplyRef = await getDoc(authorReplyDoc);
+              const { name, secondName, thirdName } = authorReplyRef.data();
+
+              newReply = {
+                content,
+                author: {
+                  name,
+                  secondName,
+                  thirdName,
+                },
+                id
+              };
+            } catch (e) {}
+            
+          }
+        }
 
         return {
           ...msg,
@@ -76,6 +119,7 @@ export const fetchChats = async (ctx) => { // запрос всех чатов �
             thirdName,
             post,
           },
+          reply: newReply,
         };
       });
       return {
@@ -99,7 +143,8 @@ export const createChat = async (data) => {
     haveAccess: store.getState().department.depts,
   }; // генерируем объект чата
   try {
-    await addDoc(chatCollection, newChat); // добавляем чат
+    const ref = await addDoc(chatCollection, newChat); // добавляем чат
+    addChatToUser(ref.id);
     toast.success(i18next.t("success.create")); // уведомляем об успешном добавлении чата
   } catch (e) {
     toast.error(i18next.t("errors.createChat")); // уведомляем о неудачном добавлении чата
@@ -116,23 +161,56 @@ export const updateChat = async (data, id) => {
   }
 };
 
-export const removeChat = async (id) => { // удаление чата по id
+export const removeChat = async (id) => {
+  // удаление чата по id
   try {
     const chatRef = doc(db, "chat", id); // получение ссылки на документ (чат)
     await deleteDoc(chatRef); // удаление документа по ссылке
+    store.dispatch(actions.setDefaultChat());
     toast.success(i18next.t("success.remove"));
   } catch (e) {
     toast.error(i18next.t("errors.removeChat"));
   }
 };
 
-export const addMessage = async (data, id) => {
+export const addMessage = async (data, id, reply) => {
+  let newReply = null;
+
+  if (reply) {
+    const { content, author, id } = reply.item;
+    newReply = {
+      author: author.id,
+      content,
+      id
+    };
+  }
+
   const chatRef = doc(db, "chat", id); // получение ссылки на документ (чат)
+  const currentDate = Date.now();
   const newMessage = {
     ...data,
-    date: Date.now(), // числовое представление даты (timestamp)
+    date: currentDate, // числовое представление даты (timestamp)
+    id: v4(), // задаем id для сообщения,
+    reply: newReply,
   };
-  await updateDoc(chatRef, { // обновляем документ добавляя в массив сообщений новое с помощью arrayUnion
+  await updateDoc(chatRef, {
+    // обновляем документ добавляя в массив сообщений новое с помощью arrayUnion
     messages: arrayUnion(newMessage),
+  });
+};
+
+export const addChatToUser = async (id) => {
+  const users = await getDocs(usersCollection);
+  users.forEach(async (snap) => {
+    const userData = snap.data();
+    const { chats } = userData;
+    const userRef = snap.ref;
+    const newChats = {
+      ...chats,
+      [id]: 0,
+    };
+    await updateDoc(userRef, {
+      chats: newChats,
+    });
   });
 };

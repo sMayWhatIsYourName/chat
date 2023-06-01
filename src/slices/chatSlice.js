@@ -10,7 +10,6 @@ export const chatSlice = createSlice({
   initialState,
   reducers: {
     setChats: (state, { payload }) => {
-      const currentChat = payload.find((chat) => chat.id === state.currentChat);
       if (payload.length === 0) {
         return;
       }
@@ -38,6 +37,9 @@ export const chatSlice = createSlice({
         currentChat.haveAccess = newHaveAccessArr;
       }
     },
+    setDefaultChat: (state) => {
+      state.currentChat = null;
+    }
   },
 });
 

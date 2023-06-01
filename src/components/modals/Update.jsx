@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Formik } from "formik";
 import {
   Modal,
@@ -20,10 +20,9 @@ function Update(props) {
   const { t } = useTranslation(); // функция для локализации
   const {
     onHide,
-    modalInfo: {
-      item: { id, name: prevName },
-    },
+    modalInfo
   } = props;
+  const { item: id } = modalInfo;
   // берем из пропсов функцию для закрытия модалки, каналы для проверки на уникальность
   // И информацию о модалке (предыдущее имя и id)
   const inputRef = useRef(); // создаем реф для инпута чтоб на нем ловить фокус
@@ -79,7 +78,7 @@ function Update(props) {
             onHide(); // закрываем модалку
           }}
           initialValues={{
-            name: prevName,
+            name: currentChatObj.name,
           }}
         >
           {({ handleSubmit, handleChange, values, errors }) => (

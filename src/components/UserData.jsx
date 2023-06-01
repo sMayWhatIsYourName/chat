@@ -1,11 +1,15 @@
-import { useSelector } from "react-redux";
+import cn from "classnames";
 import { Badge } from "react-bootstrap";
 
-export const UserData = () => {
-  const user = useSelector((state) => state.user); // берем из хранилища инфу о юзере
+export const UserData = (props) => {
+  const { user, position } = props;
+
+  const userDataClassname = cn("user-data", {
+    'user-data-end': position === 'end'
+  });
 
   return (
-    <div className="user-data">
+    <div className={userDataClassname}>
       <div className="user-data-wrapper">
         <span>ФИО:</span>
         <div className="user-data-inner">
