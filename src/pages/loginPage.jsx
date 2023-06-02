@@ -14,7 +14,6 @@ function LoginPage() {
   const navigate = useNavigate(); // берем функцию роутинга
   const auth = useAuth(); // берем инфу о нашей сессии
   const { logIn } = auth; // берем функцию из контекста для авторизации
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   useEffect(() => {
     inputEl.current.focus(); // автофокус при инициализации компонента

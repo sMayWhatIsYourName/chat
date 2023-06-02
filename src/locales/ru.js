@@ -2,12 +2,12 @@ export default {
   translation: {
     loginForm: {
       headling: 'Войти',
-      username: 'Имя пользователя',
+      username: 'Логин',
       password: 'Ваш пароль',
     },
     registrationForm: {
       headling: 'Регистрация',
-      username: 'Имя пользователя',
+      username: 'Логин',
       password: 'Пароль',
       name: 'Имя',
       secondName: 'Фамилия',

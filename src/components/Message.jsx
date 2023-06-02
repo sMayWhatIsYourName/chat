@@ -3,6 +3,7 @@ import cn from "classnames";
 import React, {
   Fragment,
   forwardRef,
+  memo,
   useEffect,
   useRef,
   useState,
@@ -12,7 +13,7 @@ import { readMessage } from "../services/user";
 import { ContextDropdown } from "./ContextDropdown";
 import { MessageReply } from "./MessageReply";
 
-export const Message = forwardRef((props, ref) => {
+export const Message = memo(forwardRef((props, ref) => {
   const { userId, message, readedCount, chatId, isLast, setShowScrollBtn, setReply, scrollReply } =
     props;
   const { item, number } = message;
@@ -38,13 +39,12 @@ export const Message = forwardRef((props, ref) => {
         count: number,
       };
       readMessage(data);
+      return;
     }
 
     if (isLast) {
       setShowScrollBtn(!isVisible);
     }
-
-    if (isLast && isVisible) {}
 
   }, [isVisible]);
 
@@ -102,4 +102,4 @@ export const Message = forwardRef((props, ref) => {
       </div>
     </>
   );
-});
+}));

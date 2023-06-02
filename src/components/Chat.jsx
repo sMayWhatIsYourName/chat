@@ -8,21 +8,26 @@ import { MessageFieldWrapper } from "./MessageFieldWrapper.jsx";
 export const Chat = () => {
   const { currentChat, chats } = useSelector((state) => state.chat);
   const [showScrollBtn, setShowScrollBtn] = useState(false);
-  const lastReadedRef = useRef(null);
+  const messagesRef = useRef(null);
   const handleClickScroll = () => {
-    const refObj = lastReadedRef.current;
-    if (refObj) {
-      refObj.scrollIntoView({ behavior: "smooth" });
+    const messagesRefCurrent = messagesRef.current;
+
+    if (messagesRefCurrent) {
+      messagesRefCurrent.lastChild.scrollIntoView();
+      setShowScrollBtn(false);
     }
   };
 
   useEffect(() => {
-    const refObj = lastReadedRef.current;
-    if (refObj) {
-      refObj.scrollIntoView();
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = 0;
     }
-  }, [lastReadedRef.current]);
+    // return () => {
+    //   console.log('unmount');
 
+    //   // document.documentElement.scrollTop = 0;
+    // };
+  }, [messagesRef.current]);
   const currentChatObj = chats.find((chat) => chat.id === currentChat);
   if (!currentChat || !currentChatObj) {
     return (
@@ -39,11 +44,14 @@ export const Chat = () => {
       <div className="d-flex flex-column h-100">
         <ChatHeader chat={currentChatObj} />
         <Messages
+          ref={messagesRef}
           chat={currentChatObj}
-          lastReadedRef={lastReadedRef}
           setShowScrollBtn={setShowScrollBtn}
         />
-        <MessageFieldWrapper handleClickScroll={handleClickScroll} currentChat={currentChat} />
+        <MessageFieldWrapper
+          handleClickScroll={handleClickScroll}
+          currentChat={currentChat}
+        />
       </div>
       {showScrollBtn && (
         <div onClick={handleClickScroll} className="circle">
