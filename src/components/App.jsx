@@ -10,7 +10,6 @@ import RegisterPage from "../pages/registerPage.jsx";
 import { fetchChats } from "../services/chat.js";
 import { fetchDepartments } from "../services/department.js";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../slices/userSlice.js";
 import { UsersPage } from "../pages/usersPage.jsx";
 import { fetchUsers } from "../services/users.js";
 import axios from "axios";

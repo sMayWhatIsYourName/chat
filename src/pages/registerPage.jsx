@@ -3,8 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../slices/userSlice.js";
+import { useDispatch } from "react-redux";
 import registerPhoto from "/registerPhoto.jpg";
 import { register } from "../services/user.js";
 

@@ -65,6 +65,9 @@ export const login = async (data) => {
       id: userId,
     };
 
+    localStorage.setItem("username", userData.username);
+    localStorage.setItem("password", userData.password);
+
     store.dispatch(actions.setUser(newUserObj));
   });
 };
