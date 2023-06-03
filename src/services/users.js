@@ -11,17 +11,19 @@ import {
   updateDoc,
   getDoc,
   where,
+  addDoc,
 } from "firebase/firestore";
 import { actions } from "../slices/usersSlice.js";
 import { toast } from "react-toastify";
 import { chatCollection } from "./chat.js";
 import i18next from "i18next";
+import { setChats } from "../utils/setChats.js";
 
 export const usersCollection = collection(db, "users");
 
 export const fetchUsers = async (access) => {
   // запрос всех пользователей
-  if (access !== "admin") {
+  if (access !== "hr-manager") {
     // если уровень доступа не админ, то не запрашиваем всех пользователей
     return;
   }
@@ -44,27 +46,12 @@ export const updateUser = async (data, id, chats) => {
   try {
     const userRef = doc(db, "users", id); // получаем ссылку на объект необходимого нам пользователя
     const { department } = (await getDoc(userRef)).data();
-    let newData = data;
+    let newData = {
+      ...data,
+      chats
+    };
     if (department !== data.department) {
-      const searchQuery =
-        data.access !== "employee"
-          ? query(chatCollection)
-          : query(
-              chatCollection,
-              where("haveAccess", "array-contains", data.department)
-            );
-      const chatsObj = {};
-      const availableChats = await getDocs(searchQuery);
-      availableChats.forEach((chatSnap) => {
-        const id = chatSnap.id;
-        let readedMessages = 0;
-
-        if (chats && chats[id]) {
-          readedMessages = chats[id];
-        }
-
-        chatsObj[id] = readedMessages;
-      });
+      const chatsObj = await setChats(data, chats);
 
       newData = {
         ...data,
@@ -119,4 +106,28 @@ export const getUsersFromDepts = async (departments) => {
   } catch(_e) {
     toast.error(i18next.t('Загрузить пользователей не удалось'))
   }
+};
+
+export const register = async (data) => {
+  const isUserUniqueQuery = query(
+    usersCollection,
+    where("username", "==", data.username)
+  ); // проверяем ник на уникальность
+  const isUserUnique = await getDocs(isUserUniqueQuery); // проверяем ник на уникальность
+
+  if (isUserUnique.size > 0) {
+    // если есть хотя бы 1 пользователь в массиве - дропаем ошибку
+    toast.error(i18next.t("errors.exist"));
+    throw error("409");
+  }
+
+  const chats = await setChats(data);
+  const dataWithChats = {
+    ...data,
+    chats
+  };
+
+  await addDoc(usersCollection, dataWithChats); // добавляем документ с инфой о нашем пользователе
+  // const userSnapshot = await getDoc(userRef); // получаем этот документ для уведолмения юзера и сохранения инфы в хранилище
+  toast.success(i18next.t("success.register"));
 };

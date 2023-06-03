@@ -63,7 +63,7 @@ export const ChatInfo = (props) => {
               );
             })}
           </div>
-          {user.access !== "employee" ? (
+          {user.access === "smm-manager" ? (
             <div className="chat-info-manage">
               <div className="chat-info-remove chat-info-btn" onClick={removeChatHandle}>Удалить</div>
               <div className="chat-info-edit chat-info-btn" onClick={editChatHandle}>Изменить</div>

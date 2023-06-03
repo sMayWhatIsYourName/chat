@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import i18next from "i18next";
+import { nullUser } from "../utils/nullUser";
 
 export const registerUser = createAsyncThunk(
   // Нужен для создания асинхронных запросов
@@ -23,27 +24,13 @@ const setUser = (state, payload) => {
   }
 };
 
-const initialState = {
-  access: "employee",
-  department: "",
-  isActive: false,
-  name: "",
-  password: "",
-  post: "",
-  secondName: "",
-  thirdName: "",
-  username: "",
-  id: "",
-  chats: null,
-};
-
 const userSlice = createSlice({
   name: "user",
-  initialState,
+  initialState: nullUser,
   reducers: {
     logout: (state) => {
       for (const key of Object.keys(state)) {
-        state[key] = initialState[key];
+        state[key] = nullUser[key];
       }
     },
     setUser: (state, { payload }) => {

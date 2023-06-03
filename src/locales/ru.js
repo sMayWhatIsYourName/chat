@@ -64,6 +64,11 @@ export default {
       department: 'Отдел',
       activate: 'Активировать ли учетную запись?',
       access: 'Доступ'
+    },
+    access: {
+      employee: 'Сотрудник',
+      'smm-manager': 'SMM-менеджер',
+      'hr-manager': 'Менеджер по персоналу'
     }
   },
 };

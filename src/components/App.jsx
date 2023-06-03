@@ -6,7 +6,6 @@ import { ModalContext, authContext } from "../contexts/index.js";
 import LoginPage from "../pages/loginPage.jsx";
 import ChatPage from "../pages/chatPage.jsx";
 import NotFoundPage from "../pages/notFoundPage.jsx";
-import RegisterPage from "../pages/registerPage.jsx";
 import { fetchChats } from "../services/chat.js";
 import { fetchDepartments } from "../services/department.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -112,8 +111,6 @@ function App() {
             />
             {/* Кладем внутрь компонент PrivateRoute и он следит за авторизацией */}
             <Route path="login" element={<LoginPage />} />
-            {/* Страница авторизации */}
-            <Route path="signup" element={<RegisterPage />} />
             {/* Страница регистрации */}
             <Route path="*" element={<NotFoundPage />} />
             {/* Все остальные страницы */}

@@ -4,7 +4,7 @@ import { useModal } from "../hooks";
 export const ButtonAddChat = () => { // кнопка создания чата
   const { showModal } = useModal(); // функция для открытия модалки
   const user = useSelector((state) => state.user); // берем инфу о юзере
-  if (user.access === 'employee') { // если уровень доступа = сотрудник, то мы не рисуем эту кнопку
+  if (user.access !== 'smm-manager') { // если уровень доступа не равен смм менеджеру, то мы не рисуем эту кнопку
     return null;
   }
   return (

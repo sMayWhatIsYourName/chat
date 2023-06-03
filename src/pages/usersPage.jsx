@@ -7,20 +7,13 @@ import { Modal } from "../components/modals/Modal";
 
 export const UsersPage = () => {
   const user = useSelector((state) => state.user);
-  const users = useSelector((state) => state.users.users);
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(users.at(-1)?.id);
+  const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
-    if (user.access !== "admin") {
+    if (user.access !== "hr-manager") {
       navigate("/");
     }
   }, [user.access]);
-
-  useEffect(() => {
-    if (!currentUser) {
-      setCurrentUser(users.at(-1));
-    }
-  }, [users]);
 
   return (
     <>
@@ -29,9 +22,7 @@ export const UsersPage = () => {
           <div className="users-wrapper">
             <div className="users-inner rounded shadow">
               <UserList setUser={setCurrentUser} />
-              {currentUser ? (
-                <UserInfo setUser={setCurrentUser} user={currentUser} />
-              ) : null}
+              <UserInfo setUser={setCurrentUser} user={currentUser} />
             </div>
           </div>
         </div>

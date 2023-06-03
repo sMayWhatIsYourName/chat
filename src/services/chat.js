@@ -27,7 +27,7 @@ export const fetchChats = async (ctx) => {
   // запрос всех чатов для юзера
   const { access, department } = ctx;
   let queryChats;
-  if (access !== "employee") {
+  if (access === "smm-manager") {
     // если уровень доступа не сотрудник - запрашиваются все чаты
     queryChats = query(chatCollection);
   } else {
@@ -166,8 +166,7 @@ export const updateChat = async (data, id) => {
     const chatsRef = await getDocs(chatCollection);
     const findedChat = chatsRef.docs.find((chat) => {
       const currentChat = chat.data();
-
-      return currentChat.name.toLowerCase() === data.name.toLowerCase() && currentChat.id !== id;
+      return currentChat.name.toLowerCase() === data.name.toLowerCase() && chat.id !== id;
     });
 
     if (findedChat) {

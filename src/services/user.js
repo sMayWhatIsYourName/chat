@@ -18,24 +18,6 @@ import i18next from "i18next";
 
 const usersCollection = collection(db, "users");
 
-export const register = async (data) => {
-  const isUserUniqueQuery = query(
-    usersCollection,
-    where("username", "==", data.username)
-  ); // проверяем ник на уникальность
-  const isUserUnique = await getDocs(isUserUniqueQuery); // проверяем ник на уникальность
-
-  if (isUserUnique.size > 0) {
-    // если есть хотя бы 1 пользователь в массиве - дропаем ошибку
-    toast.error(i18next.t("errors.exist"));
-    throw error("409");
-  }
-
-  await addDoc(usersCollection, data); // добавляем документ с инфой о нашем пользователе
-  // const userSnapshot = await getDoc(userRef); // получаем этот документ для уведолмения юзера и сохранения инфы в хранилище
-  toast.success(i18next.t("success.register"));
-};
-
 export const login = async (data) => {
   // авторизация (вход в учетку)
   const userQuery = query(
@@ -65,10 +47,13 @@ export const login = async (data) => {
       id: userId,
     };
 
-    localStorage.setItem("username", userData.username);
-    localStorage.setItem("password", userData.password);
-
-    store.dispatch(actions.setUser(newUserObj));
+    const localStorageUsername = localStorage.getItem('username');
+    if (localStorageUsername === null || userData.username === localStorageUsername) {
+      localStorage.setItem("username", userData.username);
+      localStorage.setItem("password", userData.password);
+  
+      store.dispatch(actions.setUser(newUserObj));
+    }
   });
 };
 

@@ -20,9 +20,10 @@ export const MessageField = (props) => {
     if (body.trim().length < 1) {
       return;
     }
-    const saveFormattingMsg = JSON.stringify(body);
+    const filteredMessage = filter.clean(body);
+    const saveFormattingMsg = JSON.stringify(filteredMessage);
     const newMessage = {
-      content: filter.clean(saveFormattingMsg),
+      content: saveFormattingMsg,
       author: {
         id: user.id,
       },
