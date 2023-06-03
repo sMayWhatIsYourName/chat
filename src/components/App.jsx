@@ -12,10 +12,7 @@ import { fetchDepartments } from "../services/department.js";
 import { useDispatch, useSelector } from "react-redux";
 import { UsersPage } from "../pages/usersPage.jsx";
 import { fetchUsers } from "../services/users.js";
-import axios from "axios";
 import { login } from "../services/user.js";
-
-const gptAccessKey = import.meta.env.VITE_chat;
 
 function AuthProvider({ children }) {
   const dispatch = useDispatch(); // Хук для выполнения действия в redux
@@ -75,25 +72,6 @@ function App() {
   const { access, department } = useSelector((state) => state.user); // Получаем информацию о юзере из хранилища
 
   useEffect(() => {
-    // const fn = async () => {
-    //   const config = {
-    //     url: "https://api.openai.com/v1/chat/completions",
-    //     method: "post",
-    //     headers: {
-    //       Authorization: `Bearer ${gptAccessKey}`,
-    //       "Content-Type": "application/json"
-    //     },
-    //     data: {
-    //       "model": "gpt-3.5-turbo",
-    //       "messages": [{"role": "user", "content": "21441 plus 123131 equals"}]
-    //     }
-    //   }
-    //   const response = await axios.request(config);
-    //   console.log(response);
-    // }
-
-    // fn()
-
     if (department) {
       // Если отдел есть - запрашиваем чаты для этого отдела
       const context = {

@@ -143,6 +143,16 @@ export const createChat = async (data) => {
     haveAccess: store.getState().department.depts,
   }; // генерируем объект чата
   try {
+    const chatsRef = await getDocs(chatCollection);
+    const findedChat = chatsRef.docs.find((chat) => {
+      return chat.data().name.toLowerCase() === data.name.toLowerCase();
+    });
+
+    if (findedChat) {
+      toast.error(i18next.t("errors.uniqueChat"));
+      return;
+    }
+
     const ref = await addDoc(chatCollection, newChat); // добавляем чат
     addChatToUser(ref.id);
     toast.success(i18next.t("success.create")); // уведомляем об успешном добавлении чата
@@ -153,6 +163,18 @@ export const createChat = async (data) => {
 
 export const updateChat = async (data, id) => {
   try {
+    const chatsRef = await getDocs(chatCollection);
+    const findedChat = chatsRef.docs.find((chat) => {
+      const currentChat = chat.data();
+
+      return currentChat.name.toLowerCase() === data.name.toLowerCase() && currentChat.id !== id;
+    });
+
+    if (findedChat) {
+      toast.error(i18next.t("errors.uniqueChat"));
+      return;
+    }
+
     const chatRef = doc(db, "chat", id); // получаем ссылку на нужный нам чат
     await setDoc(chatRef, data); // обновляем его
     toast.success(i18next.t("success.rename"));
