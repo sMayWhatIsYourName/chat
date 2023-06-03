@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Messages } from "./Messages";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import arrowDown from "/arrowDown.svg";
 import { ChatHeader } from "./ChatHeader";
 import { MessageFieldWrapper } from "./MessageFieldWrapper.jsx";
@@ -17,17 +17,6 @@ export const Chat = () => {
       setShowScrollBtn(false);
     }
   };
-
-  useEffect(() => {
-    if (messagesRef.current) {
-      messagesRef.current.scrollTop = 0;
-    }
-    // return () => {
-    //   console.log('unmount');
-
-    //   // document.documentElement.scrollTop = 0;
-    // };
-  }, [messagesRef.current]);
   const currentChatObj = chats.find((chat) => chat.id === currentChat);
   if (!currentChat || !currentChatObj) {
     return (

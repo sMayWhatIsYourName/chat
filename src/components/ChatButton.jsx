@@ -11,12 +11,7 @@ export const ChatButton = (props) => {
   const dispatch = useDispatch();
   const menuRef = useRef(null);
   const { setReply } = useReply();
-
-  const changeChat = (id) => {
-    // функция для смены канала
-    dispatch(actions.changeChat(id)); // изменяем текущий канал
-  };
-
+  
   const { id, name } = props;
   const isCurrent = id === currentChat;
   const readedMessages = user.chats[id];
@@ -28,18 +23,18 @@ export const ChatButton = (props) => {
     "bg-primary": isCurrent, // если канал текущий, то выделим его определенным цветом
     "chat-item-chosen": isCurrent,
   });
-
+  
   const nameClasses = cn("chat-item-name", {
     "chat-item-name-chosen": isCurrent,
   });
-
+  
   const badgeClassname = cn({
     "bg-secondary": isCurrent
   });
-
+  
   const handleChangeChat = () => {
     setReply(null);
-    changeChat(id);
+    dispatch(actions.changeChat(id)); // изменяем текущий канал
   };
 
   return (

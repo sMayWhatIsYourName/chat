@@ -1,4 +1,4 @@
-import { Fragment, useState, useRef, forwardRef, useEffect } from "react";
+import { Fragment, useState, useRef, forwardRef, useEffect, useLayoutEffect } from "react";
 import { groupDate } from "../utils/groupDate";
 import { Message } from "./Message";
 import { useSelector } from "react-redux";
@@ -10,21 +10,17 @@ export const Messages = forwardRef((props, ref) => {
   const lastReadedMessage = user.chats[chat.id];
   const groupMessages = groupDate(messages);
   const readedCount = user.chats[chatId];
-  const [reply, setReply] = useState(null);
+  const [reply, setReply] = useState(false);
   const alreadyScrolled = useRef(false);
   const lastReadedRef = useRef(null);
 
-  // useEffect(() => {
-  //   const refObj = lastReadedRef.current;
-  //   if (refObj) {
-  //     refObj.scrollIntoView();
-  //   }
+  useEffect(() => {
+    const lastReaded = lastReadedRef.current;
+    if (lastReaded) {
+      lastReaded.scrollIntoView();
+    }
 
-  //   return () => {
-  //     ref.current = null;
-  //     alreadyScrolled.current = false;
-  //   };
-  // }, [lastReadedRef.current]);
+  }, [lastReadedRef.current]);
 
   return (
     <div id="messages-box" className="chat-messages overflow-auto px-5 h-100">
@@ -36,13 +32,17 @@ export const Messages = forwardRef((props, ref) => {
             <div className="messages-wrapper" ref={ref}>
               {groupMessages.map((message) => {
                 const isLastReadedMessage =
-                  message.number === (lastReadedMessage - 1);
-                if (isLastReadedMessage) {
+                  message.number === lastReadedMessage;
+                let canScroll = false;
+                if (isLastReadedMessage && !alreadyScrolled.current) {
                   alreadyScrolled.current = true;
+                  canScroll = true;
                 }
                 return (
                   <Message
-                    ref={isLastReadedMessage && !alreadyScrolled.current ? lastReadedRef : null}
+                    ref={
+                      canScroll ? lastReadedRef : null
+                    }
                     key={message.item.id}
                     readedCount={readedCount}
                     chatId={chatId}
