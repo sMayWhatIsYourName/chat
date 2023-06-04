@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { updateUser, removeUser } from "../services/users";
 import { register } from "../services/users";
 import cn from "classnames";
-import { nullUser } from "../utils/nullUser";
+import { nullUser, setValues } from "../utils/nullUser";
 
 export const UserInfo = (props) => {
   const { t } = useTranslation();
@@ -66,36 +66,16 @@ export const UserInfo = (props) => {
   const departments = useSelector((state) => state.department.depts);
   const formik = useFormik({
     validationSchema: schema,
-    initialValues: {
-      name: currentUser?.name,
-      username: currentUser?.username,
-      secondName: currentUser?.secondName,
-      thirdName: currentUser?.thirdName,
-      post: currentUser?.post,
-      password: currentUser?.password,
-      isActive: currentUser?.isActive,
-      department: currentUser?.department,
-      access: currentUser?.access,
-    },
+    initialValues: setValues(currentUser)
   });
   const { values, errors, handleChange, setFieldValue, setFieldError } = formik;
   useEffect(() => {
-    formik.setValues({
-      name: currentUser?.name,
-      username: currentUser?.username,
-      secondName: currentUser?.secondName,
-      thirdName: currentUser?.thirdName,
-      post: currentUser?.post,
-      password: currentUser?.password,
-      isActive: currentUser?.isActive,
-      department: currentUser?.department,
-      access: currentUser?.access,
-    });
+    formik.setValues(setValues(currentUser));
   }, [currentUser]);
 
   const removeCurrentUser = () => {
     removeUser(currentUser?.id);
-    setUser(null);
+    setUser(undefined);
   };
 
   const updateCurrentUser = () => {

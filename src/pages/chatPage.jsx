@@ -41,7 +41,7 @@ function ChatPage() {
               {!currentChat ? (
                 <div className={innerClassnames}>
                   <UserData user={user} position="start" />
-                  <div className="d-flex justify-content-between ps-4 pe-2">
+                  <div className="d-flex justify-content-between channels">
                     <span>Каналы</span>
                     <ButtonAddChat />
                   </div>
@@ -55,7 +55,7 @@ function ChatPage() {
             <div className="row h-100 flex-md-row flex-nowrap">
               <div className={innerClassnames}>
                 <UserData user={user} position="start" />
-                <div className="d-flex justify-content-between ps-4 pe-2">
+                <div className="d-flex justify-content-between channels">
                   <span>Каналы</span>
                   <ButtonAddChat />
                 </div>

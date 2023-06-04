@@ -35,7 +35,7 @@ function LoginPage() {
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                 <img
                   src={loginPhoto}
-                  width="350"
+                  width="250"
                   className="rounded-circle"
                   alt="Войти"
                 />
@@ -113,12 +113,6 @@ function LoginPage() {
                   </Form>
                 )}
               </Formik>
-            </div>
-            <div className="card-footer p-4">
-              <div className="text-center">
-                <span>Нет аккаунта? </span>
-                <Link to="/signup">{t("links.register")}</Link>
-              </div>
             </div>
           </div>
         </div>

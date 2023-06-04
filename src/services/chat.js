@@ -14,6 +14,7 @@ import {
   updateDoc,
   where,
   getDocs,
+  orderBy,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 import i18next from "i18next";
@@ -29,12 +30,13 @@ export const fetchChats = async (ctx) => {
   let queryChats;
   if (access === "smm-manager") {
     // если уровень доступа не сотрудник - запрашиваются все чаты
-    queryChats = query(chatCollection);
+    queryChats = query(chatCollection, orderBy("updatedAt", "desc"));
   } else {
     // иначе запрашиваются только те чаты, к которым имеет доступ юзер исходя из его отдела
     queryChats = query(
       chatCollection,
-      where("haveAccess", "array-contains", department)
+      where("haveAccess", "array-contains", department),
+      orderBy("updatedAt", "desc")
     );
   }
 
@@ -86,9 +88,9 @@ export const fetchChats = async (ctx) => {
               author: {
                 name,
                 secondName,
-                thirdName
+                thirdName,
               },
-              id
+              id,
             };
           } else {
             try {
@@ -103,10 +105,9 @@ export const fetchChats = async (ctx) => {
                   secondName,
                   thirdName,
                 },
-                id
+                id,
               };
             } catch (e) {}
-            
           }
         }
 
@@ -141,6 +142,7 @@ export const createChat = async (data) => {
     name,
     messages: [],
     haveAccess: store.getState().department.depts,
+    updatedAt: Date.now(),
   }; // генерируем объект чата
   try {
     const chatsRef = await getDocs(chatCollection);
@@ -166,7 +168,10 @@ export const updateChat = async (data, id) => {
     const chatsRef = await getDocs(chatCollection);
     const findedChat = chatsRef.docs.find((chat) => {
       const currentChat = chat.data();
-      return currentChat.name.toLowerCase() === data.name.toLowerCase() && chat.id !== id;
+      return (
+        currentChat.name.toLowerCase() === data.name.toLowerCase() &&
+        chat.id !== id
+      );
     });
 
     if (findedChat) {
@@ -174,8 +179,13 @@ export const updateChat = async (data, id) => {
       return;
     }
 
+    const newData = {
+      ...data,
+      updatedAt: Date.now(),
+    };
+
     const chatRef = doc(db, "chat", id); // получаем ссылку на нужный нам чат
-    await setDoc(chatRef, data); // обновляем его
+    await setDoc(chatRef, newData); // обновляем его
     toast.success(i18next.t("success.rename"));
   } catch (e) {
     toast.error(i18next.t("errors.renameChat"));
@@ -202,7 +212,7 @@ export const addMessage = async (data, id, reply) => {
     newReply = {
       author: author.id,
       content,
-      id
+      id,
     };
   }
 
@@ -217,6 +227,7 @@ export const addMessage = async (data, id, reply) => {
   await updateDoc(chatRef, {
     // обновляем документ добавляя в массив сообщений новое с помощью arrayUnion
     messages: arrayUnion(newMessage),
+    updatedAt: currentDate
   });
 };
 

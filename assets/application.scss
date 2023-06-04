@@ -142,7 +142,7 @@ th {
 
 .users-table {
   overflow: scroll;
-  height: calc(100% - 54px);
+  height: calc(100vh - 3rem - 54px - 30px - 56px);
   display: block;
   scrollbar-width: thin;
 }
@@ -150,14 +150,10 @@ th {
 .user {
   padding-left: 15px;
 
-  & form > *:not(:last-of-type) {
-    margin-bottom: 50px;
-  }
-
   &-section {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 50px;
+    gap: 0 50px;
   }
 
   &-footer {
@@ -311,7 +307,7 @@ table th {
 // user data
 
 .user-data {
-  padding: 1rem 0 0 1rem;
+  padding: 12px 0 0 12px;
   display: flex;
   flex-direction: column;
   gap: 7.5px;
@@ -657,4 +653,16 @@ table th {
     width: 200px;
     border-radius: 10px !important;
   }
+}
+
+.user-form {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-content: space-between;
+  flex-direction: column;
+}
+
+.channels {
+  padding: 0 12px;
 }

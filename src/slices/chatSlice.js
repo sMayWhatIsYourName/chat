@@ -11,6 +11,8 @@ export const chatSlice = createSlice({
   reducers: {
     setChats: (state, { payload }) => {
       if (payload.length === 0) {
+        state.chats = [];
+        state.currentChat = null;
         return;
       }
       state.chats = [...payload];
