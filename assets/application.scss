@@ -256,7 +256,7 @@ table th {
 @media (max-width: 1500px) {
   .users-page {
     min-height: calc(100vh - 56px);
-    height: auto;
+    height: max-content;
   }
 
   .users-list {
@@ -268,13 +268,13 @@ table th {
   }
 
   .users-inner {
-    grid-template-rows: repeat(2, 50%);
+    grid-template-rows: repeat(2, auto);
     grid-template-columns: 100%;
     height: 100%;
   }
 
   .users-table {
-    max-height: 820px;
+    max-height: 420px;
   }
 
   .user {
