@@ -13,11 +13,18 @@ import { useEffect } from "react";
 import { updateUser, removeUser } from "../services/users";
 import { register } from "../services/users";
 import cn from "classnames";
+import { nullUser } from "../utils/nullUser";
 
 export const UserInfo = (props) => {
   const { t } = useTranslation();
   const { user, setUser } = props;
   const users = useSelector((state) => state.users.users);
+  let currentUser = users.find((u) => u.id === user);
+
+  if (user === null) {
+    currentUser = nullUser;
+  } 
+
   const schema = yup.object().shape({
     // объект валидации
     username: yup
@@ -60,55 +67,56 @@ export const UserInfo = (props) => {
   const formik = useFormik({
     validationSchema: schema,
     initialValues: {
-      name: user?.name,
-      username: user?.username,
-      secondName: user?.secondName,
-      thirdName: user?.thirdName,
-      post: user?.post,
-      password: user?.password,
-      isActive: user?.isActive,
-      department: user?.department,
-      access: user?.access,
+      name: currentUser?.name,
+      username: currentUser?.username,
+      secondName: currentUser?.secondName,
+      thirdName: currentUser?.thirdName,
+      post: currentUser?.post,
+      password: currentUser?.password,
+      isActive: currentUser?.isActive,
+      department: currentUser?.department,
+      access: currentUser?.access,
     },
   });
   const { values, errors, handleChange, setFieldValue, setFieldError } = formik;
   useEffect(() => {
     formik.setValues({
-      name: user?.name,
-      username: user?.username,
-      secondName: user?.secondName,
-      thirdName: user?.thirdName,
-      post: user?.post,
-      password: user?.password,
-      isActive: user?.isActive,
-      department: user?.department,
-      access: user?.access,
+      name: currentUser?.name,
+      username: currentUser?.username,
+      secondName: currentUser?.secondName,
+      thirdName: currentUser?.thirdName,
+      post: currentUser?.post,
+      password: currentUser?.password,
+      isActive: currentUser?.isActive,
+      department: currentUser?.department,
+      access: currentUser?.access,
     });
-  }, [user]);
+  }, [currentUser]);
 
   const removeCurrentUser = () => {
-    removeUser(user?.id);
+    removeUser(currentUser?.id);
     setUser(null);
   };
 
   const updateCurrentUser = () => {
-    updateUser(values, user?.id, user.chats);
+    updateUser(values, currentUser?.id, currentUser.chats);
   };
 
   const registerUser = () => {
     register(values);
+    setUser(undefined);
   };
 
   const errorsCount = Object.keys(errors).length;
   const canEditOrAdd = errorsCount === 0;
 
   const className = cn("user", {
-    "users-blank": !user,
+    "users-blank": user === undefined,
   });
 
   return (
     <div className={className}>
-      {user ? (
+      {user !== undefined ? (
         <form>
           <div className="user-section">
             <FormGroup>
@@ -294,7 +302,7 @@ export const UserInfo = (props) => {
             </FormGroup>
           </div>
           <div className="d-flex justify-content-end user-footer">
-            {user.id ? (
+            {user ? (
               <>
                 <Button onClick={removeCurrentUser} variant="secondary">
                   Удалить

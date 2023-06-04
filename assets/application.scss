@@ -131,7 +131,7 @@ li {
   display: grid;
   grid-template-columns: repeat(2, 50%);
   height: calc(100% - 3rem);
-  max-width: 100%;
+  width: 100%;
 }
 
 th {
@@ -259,6 +259,7 @@ table th {
 
 @media (max-width: 1500px) {
   .users-page {
+    min-height: calc(100vh - 56px);
     height: auto;
   }
 

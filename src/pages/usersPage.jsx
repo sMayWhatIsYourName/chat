@@ -8,7 +8,7 @@ import { Modal } from "../components/modals/Modal";
 export const UsersPage = () => {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState();
   useEffect(() => {
     if (user.access !== "hr-manager") {
       navigate("/");

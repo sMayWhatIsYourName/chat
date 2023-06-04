@@ -9,7 +9,8 @@ export const ChatHeader = (props) => {
   const { showModal } = useModal();
   const dispatch = useDispatch();
   const { chat } = props;
-  const backToChannels = () => {
+  const backToChannels = (e) => {
+    e.stopPropagation();
     dispatch(actions.changeChat(null));
   };
 

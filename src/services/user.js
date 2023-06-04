@@ -4,7 +4,6 @@ import { actions } from "../slices/userSlice.js";
 import {
   query,
   collection,
-  addDoc,
   getDoc,
   where,
   getDocs,

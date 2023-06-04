@@ -32,7 +32,7 @@ export const UserList = (props) => {
               isActive,
             } = user;
             return (
-              <tr onClick={() => setUser(user)} key={id}>
+              <tr onClick={() => setUser(user.id)} key={id}>
                 <th>{username}</th>
                 <th>{secondName}</th>
                 <th>{name}</th>
@@ -45,7 +45,7 @@ export const UserList = (props) => {
           })}
         </tbody>
       </Table>
-      <Button onClick={() => setUser(nullUser)}>Добавить сотрудника</Button>
+      <Button onClick={() => setUser(null)}>Добавить сотрудника</Button>
     </div>
   );
 };

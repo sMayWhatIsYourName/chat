@@ -15,7 +15,6 @@ import {
 } from "firebase/firestore";
 import { actions } from "../slices/usersSlice.js";
 import { toast } from "react-toastify";
-import { chatCollection } from "./chat.js";
 import i18next from "i18next";
 import { setChats } from "../utils/setChats.js";
 
@@ -118,7 +117,7 @@ export const register = async (data) => {
   if (isUserUnique.size > 0) {
     // если есть хотя бы 1 пользователь в массиве - дропаем ошибку
     toast.error(i18next.t("errors.exist"));
-    throw error("409");
+    return;
   }
 
   const chats = await setChats(data);
