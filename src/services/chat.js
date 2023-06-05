@@ -43,6 +43,7 @@ export const fetchChats = async (ctx) => {
   onSnapshot(queryChats, async (querySnapshot) => {
     querySnapshot.docChanges().forEach(async (change) => {
       if (change.type === "modified") {
+        console.log(change.doc.data());
         const { chats, currentChat } = store.getState().chat; // берем информацию о чатах из хранилища
         const currentChatObj = chats.find((chat) => chat.id === change.doc.id); // находим чат, в котором произошло изменение (по id), среди своих чатов
         const modifiedChat = change.doc.data(); // получаем дату измененного чата
