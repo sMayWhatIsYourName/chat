@@ -25,7 +25,7 @@ const initApp = () => {
         {/* рендерим наше приложение */}
         <ToastContainer // проводим контейнер для уведомлений пользователя
           position="top-right"
-          autoClose={5000}
+          autoClose={500000000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
