@@ -35,14 +35,14 @@ export const login = async (data) => {
       store.dispatch(mainActions.setLoading(false));
       localStorage.removeItem('username');
       localStorage.removeItem('password');
-      return;
+      throw error("404");
     }
     const { isActive } = userSnapshot.docs[0].data();
     if (!isActive) {
       // проверяем активирован ли польхователь
       toast.error(i18next.t("errors.needActivate"));
       store.dispatch(mainActions.setLoading(false));
-      return;
+      throw error("403");
     }
     
     onSnapshot(userQuery, (userSnap) => {
