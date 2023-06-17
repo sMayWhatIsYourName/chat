@@ -94,11 +94,11 @@ export const UserInfo = (props) => {
     "users-blank": user === undefined,
   });
 
-  const isCeo = values.post === "Генеральный директор";
+  const isCeo = values.post === "Исполнительный директор";
 
   useEffect(() => {
-    if (isCeo && values.access !== 'ceo') {
-      formik.setFieldValue('access', 'ceo');
+    if (isCeo && values.access !== "ceo") {
+      formik.setFieldValue("access", "ceo");
     }
   }, [isCeo]);
 
